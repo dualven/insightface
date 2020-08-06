@@ -10,14 +10,21 @@ import lfw
 parser = argparse.ArgumentParser(description='Package LFW images')
 # general
 parser.add_argument('--data-dir', default='', help='')
-parser.add_argument('--image-size', type=str, default='112,96', help='')
+#parser.add_argument('--image-size', type=str, default='112,96', help='')
+parser.add_argument('--image-size', type=str, default='112,112', help='')
 parser.add_argument('--output', default='', help='path to save.')
+parser.add_argument('--num_samepairs',default=100)
 args = parser.parse_args()
 lfw_dir = args.data_dir
 image_size = [int(x) for x in args.image_size.split(',')]
 lfw_pairs = lfw.read_pairs(os.path.join(lfw_dir, 'pairs.txt'))
-lfw_paths, issame_list = lfw.get_paths(lfw_dir, lfw_pairs, 'jpg')
+#lfw_paths, issame_list = lfw.get_paths(lfw_dir, lfw_pairs, 'jpg')
+lfw_paths, issame_list = lfw.get_paths_lfw(lfw_pairs,int(args.num_samepairs)+1)
 lfw_bins = []
+print("lfw_paths");
+print(len(lfw_paths));
+print("issame_list");
+print(len(issame_list));
 #lfw_data = nd.empty((len(lfw_paths), 3, image_size[0], image_size[1]))
 i = 0
 for path in lfw_paths:
@@ -30,6 +37,6 @@ for path in lfw_paths:
     i+=1
     if i%1000==0:
       print('loading lfw', i)
-
+print(len(lfw_bins))
 with open(args.output, 'wb') as f:
   pickle.dump((lfw_bins, issame_list), f, protocol=pickle.HIGHEST_PROTOCOL)

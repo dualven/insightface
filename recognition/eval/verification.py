@@ -163,8 +163,17 @@ def calculate_val_far(threshold, dist, actual_issame):
     n_diff = np.sum(np.logical_not(actual_issame))
     #print(true_accept, false_accept)
     #print(n_same, n_diff)
-    val = float(true_accept) / float(n_same)
-    far = float(false_accept) / float(n_diff)
+
+    #val = float(true_accept) / float(n_same)
+    #far = float(false_accept) / float(n_diff)
+    if n_same == 0:
+        val = 1
+    else:
+        val = float(true_accept) / float(n_same)
+    if n_diff == 0:
+        far = 0
+    else:
+        far = float(false_accept) / float(n_diff)
     return val, far
 
 def evaluate(embeddings, actual_issame, nrof_folds=10, pca = 0):
@@ -186,11 +195,16 @@ def load_bin(path, image_size):
   except UnicodeDecodeError as e:
     with open(path, 'rb') as f:
       bins, issame_list = pickle.load(f, encoding='bytes') #py3
+  print("111111111")
+  print(len(issame_list))
+  print("222222222111111111")
+  print(len(bins))
   data_list = []
   for flip in [0,1]:
     data = nd.empty((len(issame_list)*2, 3, image_size[0], image_size[1]))
     data_list.append(data)
   for i in range(len(issame_list)*2):
+    print(i)
     _bin = bins[i]
     img = mx.image.imdecode(_bin)
     if img.shape[1]!=image_size[0]:
