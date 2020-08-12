@@ -250,7 +250,38 @@ def get_dataset_common(input_dir, min_images = 1):
       ret += _ret
       label+=1
   return ret
+def get_dataset_gbcom(input_dir, min_images = 1):
+  ret = []
+  label = 0
+  #person_names = []
+  date_names = []
 
+  for date_name in os.listdir(input_dir):
+    if not os.path.isdir(os.path.join(input_dir,date_name)):
+       continue
+    person_names = []
+    for person_name in os.listdir(os.path.join(input_dir,date_name)):
+      person_names.append(person_name)
+    person_names = sorted(person_names)
+    for person_name in person_names:
+       _subdir = os.path.join(input_dir,date_name, person_name)
+       if not os.path.isdir(_subdir):
+         continue
+       _ret = []
+       for img in os.listdir(_subdir):
+          if not img.endswith('.jpg') and not img.endswith('.png'):
+            continue
+          fimage = edict()
+          fimage.id = os.path.join(person_name, img)
+          fimage.classname = str(label)
+          fimage.image_path = os.path.join(_subdir, img)
+          fimage.bbox = None
+          fimage.landmark = None
+          _ret.append(fimage)
+       if len(_ret)>=min_images:
+          ret += _ret
+          label+=1
+  return ret
 def get_dataset(name, input_dir):
   if name=='webface' or name=='lfw' or name=='vgg':
     return get_dataset_common(input_dir)
@@ -268,4 +299,6 @@ def get_dataset(name, input_dir):
     return get_dataset_clfw(input_dir)
   return None
 
-
+if __name__ == '__main__':
+   ret= get_dataset_gbcom("./test", 1) 
+   print(ret)
