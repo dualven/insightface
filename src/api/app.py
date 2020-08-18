@@ -13,7 +13,7 @@ from flask import Flask, render_template, request, jsonify
 parser = argparse.ArgumentParser(description='do verification')
 # general
 parser.add_argument('--image-size', default='112,112', help='')
-parser.add_argument('--model', default='/data/insightface/models/model-r100-ii/model,1', help='path to load model.')
+parser.add_argument('--model', default='./src/api/models/r100-arcface-emore/model,1', help='path to load model.')
 parser.add_argument('--gpu', default=0, type=int, help='gpu id')
 parser.add_argument('--threshold', default=1.24, type=float, help='ver dist threshold')
 args = parser.parse_args()
