@@ -114,10 +114,10 @@ dataset = edict()
 
 dataset.emore = edict()
 dataset.emore.dataset = 'emore'
-dataset.emore.dataset_path = '/data/insightface/datasets/train3/'
-dataset.emore.num_classes = 5749
+dataset.emore.dataset_path = '/data/insightface/datasets/train-gbcom2020/'
+dataset.emore.num_classes = 3800
 dataset.emore.image_shape = (112,112,3)
-dataset.emore.val_targets = ['lfw']
+dataset.emore.val_targets = ['gbcom']
 
 dataset.retina = edict()
 dataset.retina.dataset = 'retina'
@@ -190,7 +190,8 @@ default.frequent = 20
 default.verbose = 2000
 default.kvstore = 'device'
 
-default.end_epoch = 10000
+default.end_epoch = 100
+#default.end_epoch = 10000
 default.lr = 0.1
 default.wd = 0.0005
 default.mom = 0.9
