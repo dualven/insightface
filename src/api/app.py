@@ -13,7 +13,7 @@ from flask import Flask, render_template, request, jsonify
 parser = argparse.ArgumentParser(description='do verification')
 # general
 parser.add_argument('--image-size', default='112,112', help='')
-parser.add_argument('--model', default='../model/softmax,50', help='path to load model.')
+parser.add_argument('--model', default='/data/insightface/models/model-r100-ii/model,1', help='path to load model.')
 parser.add_argument('--gpu', default=0, type=int, help='gpu id')
 parser.add_argument('--threshold', default=1.24, type=float, help='ver dist threshold')
 args = parser.parse_args()
@@ -72,6 +72,7 @@ def ver():
     data = request.data
     values = json.loads(data)
     source_image = get_image(values['source'])
+    print("sourceimages", source_image.shape)
     if source_image is None:
       print('source image is None')
       return '-1'
@@ -94,6 +95,23 @@ def ver():
   #return str(int(ret))
   print('sim', ret)
   return "%1.3f"%ret
+@app.route('/getEmb', methods=['POST'])
+def getEmb():
+  try:
+    data = request.data
+    values = json.loads(data)
+    source_image = get_image(values['source'])
+    print("sourceimages", source_image.shape)
+    if source_image is None:
+      print('source image is None')
+      return '-1'
+    assert not isinstance(source_image, list)
+    print(source_image.shape)
+    ret = model.get_Emb(source_image)
+  except Exception as ex:
+    print(ex)
+    return '-1'
 
+  return jsonify({"data":ret.tolist()})
 if __name__ == '__main__':
     app.run('0.0.0.0', port=18080, debug=False)
