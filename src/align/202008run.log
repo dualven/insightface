@@ -1,0 +1,8 @@
+python align_gbcom.py --input-dir /data/gbcomFaceBase/images-2020-08/ --output-dir ../../datasets/gbcom2020-08 --image-size 112,112
+
+python face2rec2.py ../../datasets/train-gbcom2020-08/
+
+ python generate_image_pairs.py --data-dir ../../datasets/gbcom2020-08 --outputtxt ../../datasets/train-gbcom2020-08/pairs.txt  --num-samepairs 10000
+
+ python lfw2pack.py --data-dir ../../datasets/train-gbcom2020-08/ --output ../../datasets/train-gbcom2020-08/gbcom.bin --num_samepairs 10000
+
