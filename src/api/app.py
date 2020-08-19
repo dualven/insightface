@@ -108,6 +108,33 @@ def getEmb():
     assert not isinstance(source_image, list)
     print(source_image.shape)
     ret = model.get_Emb(source_image)
+    print(ret.shape)
+  except Exception as ex:
+    print(ex)
+    return '-1'
+
+  return jsonify({"data":ret.tolist()})
+@app.route('/getEmbList', methods=['POST'])
+def getEmbList():
+  try:
+    data = request.data
+    values = json.loads(data)
+    source_image = get_image(values['source'])
+    if source_image is None:
+      print('source image is None')
+      return '-1'
+    assert isinstance(source_image, list)
+    ret=[]
+    i=0
+    for im in source_image:
+      _ret = model.get_Emb(im)
+      if(i==0): 
+        ret=_ret;
+      else:
+        ret=np.vstack((ret,_ret))
+      i=i+1;
+    print(ret.shape)
+    print('iget ret')
   except Exception as ex:
     print(ex)
     return '-1'
