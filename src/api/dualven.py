@@ -41,6 +41,21 @@ def test_getEmb1():
         resp = requests.post('http://10.60.2.199:18080/getEmb', json=req)
         data = resp.json()
         return data
+def test_verByEmb():
+        source = os.path.join(test_cat , 'Stallone.jpg')
+        req = {"source": {"url":source}}
+        resp = requests.post('http://10.60.2.199:18080/getEmb', json=req)
+        data1 = resp.json()
+        #print("data1=-==================================",data1)
+        source = os.path.join(test_cat , 'TH1.jpg')
+        req = {"source": {"url":source}}
+        resp = requests.post('http://10.60.2.199:18080/getEmb', json=req)
+        data2 = resp.json()
+        #print("data2=-==================================",data2)
+        req = {"source": data1['data'],"target": data2['data']} 
+        resp = requests.post('http://10.60.2.199:18080/verByEmb', json=req)
+        data=resp.json()
+        return data
 def test_getEmb2():
         source = os.path.join(test_cat , 'Stallone.jpg')
         req = {"source": {"data":file2base64(source)}}
@@ -62,7 +77,8 @@ def test_getEmb3():
         return data
 #data =test_verfication()
 #data =test_getEmb2()
-data =test_getEmb3()
+#data =test_getEmb3()
+data=test_verByEmb()
 print(data)
 #data = extract_vecs(images, 640)
 #print(data)

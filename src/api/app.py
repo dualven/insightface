@@ -140,5 +140,19 @@ def getEmbList():
     return '-1'
 
   return jsonify({"data":ret.tolist()})
+@app.route('/verByEmb', methods=['POST'])
+def verByEmb():
+  try:
+    data = request.data
+    values = json.loads(data)
+    source_feature= (values['source'])
+    target_feature= (values['target'])
+    _ret = model.verByEmb(np.array(source_feature),np.array(target_feature))
+    print(_ret)
+  except Exception as ex:
+    print(ex)
+    return '-1'
+
+  return jsonify({"data":_ret})
 if __name__ == '__main__':
     app.run('0.0.0.0', port=18080, debug=False)
