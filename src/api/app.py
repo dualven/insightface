@@ -13,7 +13,7 @@ from flask import Flask, render_template, request, jsonify
 parser = argparse.ArgumentParser(description='do verification')
 # general
 parser.add_argument('--image-size', default='112,112', help='')
-parser.add_argument('--model', default='./src/api/models/r100-arcface-emore/model,1', help='path to load model.')
+parser.add_argument('--model', default='/data/insightface/recognition/models/r100-arcface-emore/model,1', help='path to load model.')
 parser.add_argument('--gpu', default=0, type=int, help='gpu id')
 parser.add_argument('--threshold', default=1.24, type=float, help='ver dist threshold')
 args = parser.parse_args()
@@ -50,7 +50,7 @@ def get_image(data):
     if _bin is not None:
       if not isinstance(_bin, list):
         _bin = base64.b64decode(_bin)
-        _bin = np.fromstring(_bin, np.uint8)
+        _bin = np.frombuffer(_bin, np.uint8)
         image = cv2.imdecode(_bin, cv2.IMREAD_COLOR)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = image_resize(image)
@@ -58,7 +58,7 @@ def get_image(data):
         image = []
         for __bin in _bin:
           __bin = base64.b64decode(__bin)
-          __bin = np.fromstring(__bin, np.uint8)
+          __bin = np.frombuffer(__bin, np.uint8)
           _image = cv2.imdecode(__bin, cv2.IMREAD_COLOR)
           _image = cv2.cvtColor(_image, cv2.COLOR_BGR2RGB)
           _image = image_resize(_image)

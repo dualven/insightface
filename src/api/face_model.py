@@ -151,7 +151,7 @@ class FaceModel:
 
   def is_same_id(self, source_img, target_img_list):
     source_face = self.get_aligned_face(source_img, True)
-    print('source face', source_face.shape)
+    #print('source face', source_face.shape)
     target_face_list = []
     pp = 0
     for img in target_img_list:
@@ -162,7 +162,7 @@ class FaceModel:
       if target_face is not None:
         target_face_list.append(target_face)
       pp+=1
-    print('target face', len(target_face_list)) 
+    #print('target face', len(target_face_list)) 
     source_feature = self.get_feature(source_face, True)
     target_feature = None
     for target_face in target_face_list:
@@ -185,7 +185,7 @@ class FaceModel:
   def sim(self, source_img, target_img_list):
     print('sim start')
     source_face = self.get_aligned_face(source_img, True)
-    print('source face', source_face.shape)
+    #print('source face', source_face.shape)
     target_face_list = []
     pp = 0
     for img in target_img_list:
@@ -196,7 +196,7 @@ class FaceModel:
       if target_face is not None:
         target_face_list.append(target_face)
       pp+=1
-    print('target face', len(target_face_list)) 
+    #print('target face', len(target_face_list)) 
     source_feature = self.get_feature(source_face, True)
     target_feature = None
     sim_list = []
@@ -205,3 +205,6 @@ class FaceModel:
       _sim = np.dot(source_feature, _feature.T)
       sim_list.append(_sim)
     return np.max(sim_list)
+  def verByEmb(self,source_feature, target_feature):
+      _sim = np.dot(source_feature, target_feature.T)
+      return "%1.3f"%_sim;
